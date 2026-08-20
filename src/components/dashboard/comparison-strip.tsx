@@ -1,0 +1,6 @@
+import { formatPct } from "@/lib/format";
+
+export function ComparisonStrip({ items }: { items: { label: string; person: number; benchmark: number; format?: "pct" | "days" | "number" }[] }) {
+  const fmt = (v:number, type?:string) => type === "pct" ? formatPct(v) : type === "days" ? `${v.toFixed(1)}d` : String(Math.round(v));
+  return <div className="grid gap-3 md:grid-cols-3">{items.map((item) => { const good = item.label.toLowerCase().includes("cycle") ? item.person <= item.benchmark : item.person >= item.benchmark; return <div key={item.label} className="rounded-xl border border-[#e7e9ed] bg-white p-4"><div className="text-xs font-semibold uppercase tracking-[.07em] text-[#8a93a2]">{item.label}</div><div className="mt-3 flex items-end justify-between gap-3"><div><div className="text-2xl font-bold tracking-[-.04em]">{fmt(item.person,item.format)}</div><div className="mt-1 text-xs text-[#667085]">This rep</div></div><div className="text-right"><div className="text-sm font-bold text-[#475467]">{fmt(item.benchmark,item.format)}</div><div className="mt-1 text-[11px] text-[#98a2b3]">Branch avg</div></div></div><div className={`mt-3 text-xs font-semibold ${good ? "text-[#0b8058]" : "text-[#b83232]"}`}>{good ? "At / above benchmark" : "Needs coaching"}</div></div>})}</div>;
+}

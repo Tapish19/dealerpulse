@@ -1,0 +1,12 @@
+"use client";
+
+import { useState } from "react";
+import { ArrowUpRight } from "lucide-react";
+import { titleCase, formatINR } from "@/lib/format";
+import { LeadDrawer, type LeadDrawerData } from "./lead-drawer";
+
+export function LeadTable({ rows, emptyText = "No leads match this view." }: { rows: LeadDrawerData[]; emptyText?: string }) {
+  const [selected, setSelected] = useState<LeadDrawerData | null>(null);
+  if (!rows.length) return <div className="rounded-xl border border-dashed border-[#dfe3e8] p-8 text-center text-sm text-[#667085]">{emptyText}</div>;
+  return <><div className="overflow-x-auto"><table className="w-full min-w-[760px] text-sm"><thead><tr className="text-left text-[11px] uppercase tracking-[.07em] text-[#8a93a2]"><th className="border-b border-[#edf0f2] px-3 py-3 font-semibold">Lead</th><th className="border-b border-[#edf0f2] px-3 py-3 font-semibold">Stage</th><th className="border-b border-[#edf0f2] px-3 py-3 font-semibold">Owner</th><th className="border-b border-[#edf0f2] px-3 py-3 font-semibold">Branch</th><th className="border-b border-[#edf0f2] px-3 py-3 font-semibold">Idle</th><th className="border-b border-[#edf0f2] px-3 py-3 font-semibold">Value</th><th className="border-b border-[#edf0f2] px-3 py-3"></th></tr></thead><tbody>{rows.map((row) => <tr key={row.id} className="hover:bg-[#fafbfc]"><td className="border-b border-[#f0f1f3] px-3 py-4"><div className="font-bold">{row.customerName}</div><div className="mt-0.5 text-xs text-[#98a2b3]">{row.vehicleModel ?? row.source ?? row.id}</div></td><td className="border-b border-[#f0f1f3] px-3 py-4"><span className="rounded-full bg-[#f2f4f7] px-2 py-1 text-xs font-semibold text-[#475467]">{titleCase(row.stage)}</span></td><td className="border-b border-[#f0f1f3] px-3 py-4">{row.repName}</td><td className="border-b border-[#f0f1f3] px-3 py-4">{row.branchName}</td><td className="border-b border-[#f0f1f3] px-3 py-4"><span className={row.daysIdle && row.daysIdle >= 7 ? "font-bold text-[#b83232]" : "text-[#667085]"}>{row.daysIdle ?? 0}d</span></td><td className="border-b border-[#f0f1f3] px-3 py-4 font-medium">{formatINR(row.expectedRevenue)}</td><td className="border-b border-[#f0f1f3] px-3 py-4 text-right"><button className="inline-flex items-center gap-1 text-xs font-bold text-[#315fce]" onClick={() => setSelected(row)}>View <ArrowUpRight size={13}/></button></td></tr>)}</tbody></table></div><LeadDrawer open={Boolean(selected)} onClose={() => setSelected(null)} data={selected}/></>;
+}
