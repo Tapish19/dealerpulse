@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound(){return <div className="grid min-h-screen place-items-center bg-[#f6f7f9] p-6"><div className="text-center"><div className="text-5xl font-bold tracking-[-.05em]">404</div><p className="mt-3 text-[#667085]">That branch or sales representative doesn’t exist in this dataset.</p><Link href="/" className="mt-5 inline-flex rounded-lg bg-[#111827] px-4 py-2 text-sm font-bold text-white">Back to overview</Link></div></div>}
